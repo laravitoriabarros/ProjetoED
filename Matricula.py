@@ -61,7 +61,7 @@ def tente_novamente(inicio):
             tente_novamente('iniciar')
 
 
-def matricular(inicio):
+def matricular_calouros(inicio):
 
     print("\n")
     print("####################################################\n")
@@ -127,8 +127,8 @@ def matricular(inicio):
 
 
 
+def matricular_veteranos(inicio):
 
-
-matricular("iniciar")
+    print("Não sei o que fazer")
 
 
