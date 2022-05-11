@@ -1,4 +1,6 @@
 import random
+from MenuPrincipal import menu_Principal
+
 #Esta função é chamada quando o usuário apresenta uma entrada inválida
 def tente_novamente(inicio):
 
