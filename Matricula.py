@@ -1,5 +1,6 @@
 import random
-from MenuPrincipal import menu_Principal
+
+
 
 #Esta função é chamada quando o usuário apresenta uma entrada inválida
 def tente_novamente(inicio):
@@ -33,6 +34,7 @@ def tente_novamente(inicio):
         #Se o usuário escolher a opção 1, então o mandamos de volta para o menu inicial
         if opcaoConvert == 1:
 
+            from MenuPrincipal import menu_Principal
             menu_Principal('iniciar')
 
         #Se o usuário escolher a opção 2, então encerramos o programa
@@ -41,6 +43,7 @@ def tente_novamente(inicio):
             print("------------------------------------------")
             print("Programa encerrado.")
             print("------------------------------------------")
+            exit()
 
         #Se a entrada não for nem 1 e nem 2, então chamamos novamente a função de erro "tente_novamente"
         if opcaoConvert != 1 and opcaoConvert != 2:
@@ -101,7 +104,19 @@ def matricular_calouros(inicio):
 
     curso = "Ciência da Computação"
 
-    print("Matrícula efetuada com sucesso!\n")
+    from openpyxl import Workbook, load_workbook
+    from openpyxl.utils import get_column_letter
+    #Aqui estamos acessando a planilha
+    wb = load_workbook('/Users/larav/Downloads/ProjetoED/dados_dos_alunos.xlsx')
+    #Aqui estamos acessando a página da planilha
+    ws = wb['Página1']
+    #Aqui estamos adicionando os dados dos calouros na planilha e salvando o arquivo
+    to_append = [nome_aluno, cpf_aluno, matricula, 1, 'Padrão', 'COMP359, COMP360, COMP361, COMP362, COMP363', 0]
+    ws.append(to_append)
+    wb.save('dados_dos_alunos.xlsx')
+    
+
+    print("\nMatrícula efetuada com sucesso!\n")
 
     print("----------------------------------------------------\n")
     print("                    Dados do Estudante\n")
@@ -132,5 +147,4 @@ def matricular_calouros(inicio):
 def matricular_veteranos(inicio):
 
     print("Não sei o que fazer")
-
 
