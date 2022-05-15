@@ -146,7 +146,101 @@ def matricular_calouros(inicio):
 
 def matricular_veteranos(inicio):
 
-    print("Não sei o que fazer")
+    path = "dados_dos_alunos.xlsx"
+ 
+    book = openpyxl.load_workbook(path)
+
+    pagina = book['Página1']
+
+    matriculas = []
+
+    for rows in pagina.iter_rows(min_row=2):
+        matriculas.append(rows[2].value)
+
+    matricula_found = False
+
+    while not matricula_found:
+        matricula = float(input("Digite seu número de matrícula: "))
+        for i in matriculas:
+            if (i == matricula):
+                matricula_found = True
+                break
+        if (not matricula_found):
+            print("Número de matrícula inválido. Tente novamente.")
+    
+    print(grabMateriasPagasAluno(matricula))
+    materias = materiasDoPeriodo(grabPeriodoAluno(matricula)+1)
+    print(materias)
+    print(grabPrequisitos(materias))            
+
+
+    
+
+
+def grabMateriasPagasAluno(matricula):
+    matricula = float(matricula)
+    path = "dados_dos_alunos.xlsx"
+
+    book = openpyxl.load_workbook(path)
+
+    pagina = book['Página1']
+    materias_pagas = list() 
+
+    for rows in pagina.iter_rows(min_row=2):
+        if (rows[2].value == matricula):
+            materias_pagas = rows[5].value.split(', ')
+            break
+
+    return materias_pagas
+
+def grabPrequisitos(materias):
+    path = "Disciplinas - Trabalho Estrutura de Dados.xlsx"
+    book = openpyxl.load_workbook(path)
+
+    pagina = book['Obrigatórias CC']
+
+    pre_req = dict()
+
+    for materia in materias:
+        for rows in pagina.iter_rows(min_row=2):
+            if (rows[0].value == materia):
+                pre_req[f'{materia}'] = rows[2].value
+                break
+
+    return pre_req
+
+
+
+def grabPeriodoAluno(matricula):
+    matricula = float(matricula)
+    path = "dados_dos_alunos.xlsx"
+
+    book = openpyxl.load_workbook(path)
+
+    pagina = book['Página1']
+
+    periodo = None
+
+    for rows in pagina.iter_rows(min_row=2):
+        if (rows[2].value == matricula):
+            periodo = rows[3].value
+            break
+    
+    return periodo
+
+def materiasDoPeriodo(periodo):
+    path = "Disciplinas - Trabalho Estrutura de Dados.xlsx"
+    book = openpyxl.load_workbook(path)
+
+    pagina = book['Obrigatórias CC']
+
+    materias_periodo = []
+
+    for rows in pagina.iter_rows(min_row=2):
+        if (rows[3].value == periodo):
+            materias_periodo.append(rows[0].value)
+
+    return materias_periodo
     
 #Aqui geramos uma matrícula diferente de todas que já existem
 def gerar_numeromatricula():
