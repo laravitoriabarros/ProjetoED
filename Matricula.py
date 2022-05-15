@@ -1,6 +1,8 @@
 import random
 
-
+import openpyxl
+from openpyxl import Workbook, load_workbook
+from openpyxl.utils import get_column_letter
 
 #Esta função é chamada quando o usuário apresenta uma entrada inválida
 def tente_novamente(inicio):
@@ -100,14 +102,12 @@ def matricular_calouros(inicio):
         tente_novamente("iniciar")
 
 
-    matricula = random.randint(10000,20000)
+    matricula = gerar_numeromatricula()
 
     curso = "Ciência da Computação"
 
-    from openpyxl import Workbook, load_workbook
-    from openpyxl.utils import get_column_letter
     #Aqui estamos acessando a planilha
-    wb = load_workbook('/Users/larav/Downloads/ProjetoED/dados_dos_alunos.xlsx')
+    wb = load_workbook('dados_dos_alunos.xlsx')
     #Aqui estamos acessando a página da planilha
     ws = wb['Página1']
     #Aqui estamos adicionando os dados dos calouros na planilha e salvando o arquivo
@@ -147,4 +147,29 @@ def matricular_calouros(inicio):
 def matricular_veteranos(inicio):
 
     print("Não sei o que fazer")
+    
+#Aqui geramos uma matrícula diferente de todas que já existem
+def gerar_numeromatricula():
+
+    path = "dados_dos_alunos.xlsx"
+ 
+    book = openpyxl.load_workbook(path)
+
+    pagina = book['Página1']
+
+    matriculas = []
+
+    for rows in pagina.iter_rows(min_row=2):
+        matriculas.append(rows[2].value)
+
+    number = random.randint(10000000, 20000000)
+    i = 0
+
+    while (i < len(matriculas)):
+        if (number == matriculas[i]):
+            i = 0 
+            number = random.randint(10000000, 20000000)
+        else:
+            i += 1
+    return number
 
